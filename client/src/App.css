@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.swiper-pagination-bullet {
+  background: transparent;
+  margin-right: 2rem;
+  border: none;
+}
+
+.custom-bullet::before {
+  content: '–––';
+  font-size: 3rem;
+  color: #fff; 
+  position: absolute;
+  bottom:12rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .custom-bullet{
+    position: absolute;
+    top:4.75rem;
+    right: 11rem;
+  }
+  .progress-circle{
+      margin-top: 0rem;
+      /* margin-bottom: 2rem; */
+  }
+  /* .circle-center{
+    margin-bottom: 2rem;
+  } */
+  
+}
+
+.progress-circle {
+  position: relative;
+  width: 80px;  
+  height: 80px;  
+  border-radius: 50%;
+  background: conic-gradient(
+    white 0% 75%,
+    rgba(255, 255, 255, 0.3) 75% 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top:3rem;
+}
+
+.circle-center {
+  position: absolute;
+  width: 68px;  
+  height: 68px;  
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
