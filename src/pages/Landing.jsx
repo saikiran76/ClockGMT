@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from '../components/Slider';
 import smallsrc from '../assets/burger.png'; 
 
-const OnBoard = () => {
+export const OnBoard = () => {
   const source = "https://cdn.pixabay.com/photo/2023/03/05/11/02/burger-7831128_640.jpg"; 
   const sourceSmall = smallsrc; 
 
@@ -18,4 +18,4 @@ const OnBoard = () => {
   );
 };
 
-export default OnBoard;
+
