@@ -11,6 +11,14 @@ export default defineConfig({
         globals: {}
       }
     }
-  }
+  },
+  rewrites: async () => {
+    return [
+      {
+        source: '/analog-clock/:id',
+        destination: '/tracking', 
+      },
+    ];
+  },
 })
   
