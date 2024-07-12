@@ -3,9 +3,13 @@ import Lottie from 'react-lottie';
 import animationData from '../utils/inanime.json';
 import { HiBadgeCheck } from "react-icons/hi";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeUser } from '../utils/userSlice';
 
 const SuccessPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user.user)
 
   const defaultOptions = {
     loop: true,
@@ -22,6 +26,8 @@ const SuccessPage = () => {
 
   const handleLogout = () => {
     navigate('/onboard');
+    dispatch(removeUser(user));
+
   };
 
   return (

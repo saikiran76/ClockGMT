@@ -42,10 +42,13 @@ const Tracking = () => {
   }, [speed]);
 
   const handleShare = () => {
-    const url = `${window.location.origin}/analog-clock/${uuidv4()}?speed=${speed}`;
+    const uuid = uuidv4(); 
+    const url = `${window.location.origin}/analog-clock/${uuid}?speed=${speed}`;
     setShareUrl(url);
     navigator.clipboard.writeText(url).then(() => {
       alert('URL copied to clipboard!');
+    }).catch((error) => {
+      console.error('Failed to copy URL to clipboard:', error);
     });
   };
 
@@ -73,7 +76,7 @@ const Tracking = () => {
       </button>
       {shareUrl && (
         <p className="mt-3 text-gray-500">
-          Share this URL: <a href={shareUrl} className="text-blue-500">{shareUrl}</a>
+          Share this URL: <a href={shareUrl} className="text-blue-500" target="_blank" rel="noopener noreferrer">{shareUrl}</a>
         </p>
       )}
     </div>
