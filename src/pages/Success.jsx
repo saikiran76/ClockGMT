@@ -21,7 +21,7 @@ const SuccessPage = () => {
   };
 
   const handleLogout = () => {
-    navigate('/login');
+    navigate('/onboard');
   };
 
   return (

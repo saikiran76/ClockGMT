@@ -3,6 +3,7 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import client from "../utils/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [loggedin, setLoggedIn] = useState(true);
@@ -41,21 +42,22 @@ const Login = () => {
     setErrorMessage(""); 
     if (loggedin) {
       // Login 
-      const { error } = await client.auth.signInWithPassword({
+      const { data, error } = await client.auth.signInWithPassword({
         email,
         password,
       });
-
+  
       if (error) {
         console.error("Error logging in:", error.message);
         setErrorMessage("Login failed");
         return;
       }
-
+  
+      dispatch(addUser(data.user));
       navigate("/");
     } else {
       // Signup 
-      const { error } = await client.auth.signUp(
+      const { data, error } = await client.auth.signUp(
         {
           email,
           password,
@@ -64,13 +66,14 @@ const Login = () => {
           data: { username },
         }
       );
-
+  
       if (error) {
         console.error("Error signing up:", error.message);
         setErrorMessage("Signup failed");
         return;
       }
-
+  
+      dispatch(addUser(data.user));
       navigate("/");
     }
   };

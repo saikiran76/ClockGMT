@@ -3,66 +3,66 @@ import { OnBoard } from "./pages/Landing";
 import Login from "./pages/Login";
 import Success from "./pages/Success";
 import client from "./utils/supabaseClient";
-import { useEffect, useState } from "react";
-import { Provider, useSelector } from "react-redux";
-import store from "./utils/store";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addUser, removeUser } from "./utils/userSlice";
 import Tracking from "./pages/Tracking";
 
 const App = () => {
-  // const [currentUser, setUser] = useState(null);
-  const user = useSelector((state)=>state.user)
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
 
-  // useEffect(() => {
-  //   const fetchSession = async () => {
-  //     const { data, error } = await client.auth.getSession();
-  //     if (error) {
-  //       console.error("Error fetching session:", error.message);
-  //       return;
-  //     }
-  //     setUser(data?.session?.user ?? null);
+  useEffect(() => {
+    const fetchSession = async () => {
+      const { data, error } = await client.auth.getSession();
+      if (error) {
+        console.error("Error fetching session:", error.message);
+        return;
+      }
+      if (data?.session?.user) {
+        dispatch(addUser(data.session.user));
+      } else {
+        dispatch(removeUser());
+      }
 
-  //     const { data: authListener } = client.auth.onAuthStateChange(
-  //       (event, session) => {
-  //         switch (event) {
-  //           case "SIGNED_IN":
-  //             setUser(session?.user);
-  //             break;
-  //           case "SIGNED_OUT":
-  //             setUser(null);
-  //             break;
-  //           default:
-  //         }
-  //       }
-  //     );
+      const { data: authListener } = client.auth.onAuthStateChange(
+        (event, session) => {
+          switch (event) {
+            case "SIGNED_IN":
+              dispatch(addUser(session?.user));
+              break;
+            case "SIGNED_OUT":
+              dispatch(removeUser());
+              break;
+            default:
+          }
+        }
+      );
 
-  //     return () => {
-  //       authListener.subscription.unsubscribe();
-  //     };
-  //   };
+      return () => {
+        authListener.subscription.unsubscribe();
+      };
+    };
 
-  //   fetchSession();
-  // }, []);
+    fetchSession();
+  }, [dispatch]);
 
   const ProtectedRoute = ({ children }) => {
     if (user) {
       return children;
     }
-
-    console.log("The current session user: ", user);
-    return <Navigate to="/login" />;
+    return <Navigate to="/onboard" />;
   };
 
   return (
-    
     <BrowserRouter>
       <Routes>
         <Route path="/onboard" element={<OnBoard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<ProtectedRoute><Success /></ProtectedRoute>} />
-        <Route path="/tracking" element={<Tracking/>}/>
+        <Route path="/tracking" element={<ProtectedRoute><Tracking /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
-
   );
 };
 
