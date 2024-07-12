@@ -1,15 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import gsap from 'gsap';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
+
 
 const Tracking = () => {
+  gsap.registerPlugin(ScrollTrigger);
   const [speed, setSpeed] = useState(1);
   const [shareUrl, setShareUrl] = useState('');
   const hourHandRef = useRef(null);
   const minuteHandRef = useRef(null);
   const secondHandRef = useRef(null);
+  const quoteRef = useRef(null)
+  const ref = useRef();
   const [quote, setQuote] = useState(''); 
   const [category, setCategory] = useState('happiness');
+
+  useEffect(() => {
+    const el = ref.current;
+    gsap.fromTo(el, { scale: 0 }, {
+        scale: 1.1, duration: 1, scrollTrigger: {
+            trigger: el
+        }
+    })
+  }, [])
 
   useEffect(() => {
     let interval;
@@ -78,13 +94,15 @@ const Tracking = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 font-poppins">
+    <div className="flex items-center gap-[6rem] justify-center min-h-screen bg-gray-100 font-poppins m-5 p-4">
+      <div className='mr-5'>
       <div className="w-64 h-64 border-8 border-orange-500 rounded-full flex items-center justify-center relative">
         <div ref={hourHandRef} className="w-2 h-24 bg-black origin-bottom absolute bottom-1/2"></div>
         <div ref={minuteHandRef} className="w-1 h-28 bg-black origin-bottom absolute bottom-1/2"></div>
         <div ref={secondHandRef} className="w-1 h-32 bg-black origin-bottom absolute bottom-1/2"></div>
       </div>
-      <input
+
+        <input
         type="range"
         min="1"
         max="10"
@@ -92,6 +110,7 @@ const Tracking = () => {
         onChange={(e) => setSpeed(parseInt(e.target.value))}
         className="mt-6 w-64"
       />
+
       <p className="mt-2">Speed: {speed}x</p>
       <button
         className="mt-6 bg-orange-500 text-white px-6 py-3 rounded-full hover:bg-orange-600"
@@ -104,7 +123,14 @@ const Tracking = () => {
           Share this URL: <a href={shareUrl} className="text-blue-500" target="_blank" rel="noopener noreferrer">{shareUrl}</a>
         </p>
       )}
-      <p className="mt-6 border-gray-400 border-2 p-3 text-sm rounded">{quote}</p>
+      </div>
+      
+      <div className='border-gray-300 border-l-2 p-10'>
+      <div className='p-5 border-gray-300 border-2 ml-12 m-10' ref={ref}>
+        <p className='text-center font-semibold text-xl mt-6'>Quote</p>
+        <p ref={quoteRef} className="mt-6 border-gray-300 border-2 p-3 w-[28rem] text-sm rounded-md bg-orange-600 text-white">{quote}</p>
+      </div>
+      </div>
     </div>
   );
 };
