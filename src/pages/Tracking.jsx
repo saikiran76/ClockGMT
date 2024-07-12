@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 const Tracking = () => {
   const [speed, setSpeed] = useState(1);
@@ -7,6 +8,8 @@ const Tracking = () => {
   const hourHandRef = useRef(null);
   const minuteHandRef = useRef(null);
   const secondHandRef = useRef(null);
+  const [quote, setQuote] = useState(''); 
+  const [category, setCategory] = useState('happiness');
 
   useEffect(() => {
     let interval;
@@ -40,6 +43,28 @@ const Tracking = () => {
 
     return () => clearInterval(interval);
   }, [speed]);
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      try {
+        const response = await axios.get(`https://api.api-ninjas.com/v1/quotes?category=${category}`, {
+          headers: {
+            'X-Api-Key': 'ysP+oFcTuAKifKXmLDwpyA==WeLGsMCrIQeFiF37', 
+          },
+        });
+        const quoteData = response.data;
+        setQuote(quoteData[0].quote); 
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchQuote(); 
+
+    const interval = setInterval(fetchQuote, 5000); 
+
+    return () => clearInterval(interval);
+  }, [category]);
 
   const handleShare = () => {
     const uuid = uuidv4(); 
@@ -79,6 +104,7 @@ const Tracking = () => {
           Share this URL: <a href={shareUrl} className="text-blue-500" target="_blank" rel="noopener noreferrer">{shareUrl}</a>
         </p>
       )}
+      <p className="mt-6 border-gray-400 border-2 p-3 text-sm rounded">{quote}</p>
     </div>
   );
 };
