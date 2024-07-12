@@ -49,7 +49,7 @@ const Tracking = () => {
       try {
         const response = await axios.get(`https://api.api-ninjas.com/v1/quotes?category=${category}`, {
           headers: {
-            'X-Api-Key': 'ysP+oFcTuAKifKXmLDwpyA==WeLGsMCrIQeFiF37', 
+            'X-Api-Key': import.meta.env.VITE_QAPIKEY, 
           },
         });
         const quoteData = response.data;
