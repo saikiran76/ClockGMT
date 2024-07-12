@@ -63,8 +63,8 @@ const Slider = () => {
               </div>
             ) : (
               <div className="flex justify-between w-full">
-                <button className="text-white mt-[5rem] md:mt-[15rem] hover:text-[#EEBF74] duration-200">Skip</button>
-                <button className="relative text-white mt-[5rem] md:mt-[15rem] flex items-center gap-3 hover:text-[#EEBF74] duration-200" onClick={handleNext}>
+                <button className="text-white mt-[5rem] md:mt-[14rem] hover:text-[#EEBF74] duration-200">Skip</button>
+                <button className="relative text-white mt-[5rem] md:mt-[14rem] flex items-center gap-3 hover:text-[#EEBF74] duration-200" onClick={handleNext}>
                   Next
                   <span className="hover:text-[#EEBF74] duration-200">→</span>
                 </button>
